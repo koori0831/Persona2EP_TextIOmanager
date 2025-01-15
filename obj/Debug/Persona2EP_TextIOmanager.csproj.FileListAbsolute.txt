@@ -1,0 +1,7 @@
+C:\Users\user\source\repos\Persona2EP_TextIOmanager\bin\Debug\Persona2EP_TextIOmanager.exe.config
+C:\Users\user\source\repos\Persona2EP_TextIOmanager\bin\Debug\Persona2EP_TextIOmanager.exe
+C:\Users\user\source\repos\Persona2EP_TextIOmanager\bin\Debug\Persona2EP_TextIOmanager.pdb
+C:\Users\user\source\repos\Persona2EP_TextIOmanager\obj\Debug\Persona2EP_TextIOmanager.csproj.AssemblyReference.cache
+C:\Users\user\source\repos\Persona2EP_TextIOmanager\obj\Debug\Persona2EP_TextIOmanager.csproj.CoreCompileInputs.cache
+C:\Users\user\source\repos\Persona2EP_TextIOmanager\obj\Debug\Persona2EP_TextIOmanager.exe
+C:\Users\user\source\repos\Persona2EP_TextIOmanager\obj\Debug\Persona2EP_TextIOmanager.pdb
