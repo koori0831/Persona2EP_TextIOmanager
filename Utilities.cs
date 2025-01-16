@@ -35,5 +35,19 @@ namespace Persona2EP_TextIOmanager
                 return null;
             }
         }
+
+        public static string GetFolderPathFromDialog(string title = "폴더 선택")
+        {
+            using (FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog())
+            {
+                folderBrowserDialog.Description = title;
+                folderBrowserDialog.ShowNewFolderButton = true;
+                if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+                {
+                    return folderBrowserDialog.SelectedPath;
+                }
+                return null;
+            }
+        }
     }
 }

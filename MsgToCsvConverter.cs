@@ -2,19 +2,14 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Persona2EP_TextIOmanager
 {
     public class MsgToCsvConverter
     {
-        public void ConvertMsgToCsv()
+        public void ConvertMsgToCsv(string msgFilePath, string csvFilePath)
         {
-            string msgFilePath = Utilities.GetFilePathFromDialog("변환할 msg 파일 선택", "msg files (*.msg)|*.msg|All files (*.*)|*.*");
-            if (string.IsNullOrEmpty(msgFilePath)) return;
-
-            string csvFilePath = Utilities.GetSaveFilePathFromDialog("CSV 파일 저장 경로 선택", "CSV files (*.csv)|*.csv|All files (*.*)|*.*");
-            if (string.IsNullOrEmpty(csvFilePath)) return;
-
             try
             {
                 var dialogues = ParseMsgFileForCsv(msgFilePath);
@@ -119,7 +114,35 @@ namespace Persona2EP_TextIOmanager
             using (var writer = new StreamWriter(filePath))
             {
                 writer.WriteLine("Key,Original,Translated");
-                foreach (var entry in dialogues.OrderBy(k => k.Key))
+
+                IEnumerable<KeyValuePair<string, List<string>>> sortedEntries = dialogues
+                    .OrderBy(entry =>
+                    {
+                        string key = entry.Key;
+
+                        if (key.Contains("_Choice"))
+                        {
+                            Match match = Regex.Match(key, @"msg_(\d+)_Choice(\d+)");
+                            if (match.Success)
+                            {
+                                int msgNum = int.Parse(match.Groups[1].Value);
+                                int choiceNum = int.Parse(match.Groups[2].Value);
+                                return (msgNum * 1000) + choiceNum;
+                            }
+                        }
+                        else
+                        {
+                            Match match = Regex.Match(key, @"msg_(\d+)");
+                            if (match.Success)
+                            {
+                                return int.Parse(match.Groups[1].Value) * 1000;
+                            }
+                        }
+
+                        return int.MaxValue;
+                    });
+
+                foreach (var entry in sortedEntries)
                 {
                     if (entry.Key.StartsWith("msg_") && !entry.Key.Contains("_Choice"))
                     {

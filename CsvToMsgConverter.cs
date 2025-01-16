@@ -4,24 +4,17 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Windows.Forms;
 
 namespace Persona2EP_TextIOmanager
 {
     public class CsvToMsgConverter
     {
-        public void ConvertCsvToMsg()
+        public void ConvertCsvToMsg(string msgFilePath, string csvFilePath)
         {
-            string inputCsvPath = Utilities.GetFilePathFromDialog("변환할 CSV 파일 선택", "CSV files (*.csv)|*.csv|All files (*.*)|*.*");
-            if (string.IsNullOrEmpty(inputCsvPath)) return;
-
-            string outputTxtPath = Utilities.GetSaveFilePathFromDialog("msg 파일 저장 경로 선택", "msg files (*.msg)|*.msg|All files (*.*)|*.*");
-            if (string.IsNullOrEmpty(outputTxtPath)) return;
-
             try
             {
                 var parsedCsv = new List<string[]>();
-                using (TextFieldParser parser = new TextFieldParser(inputCsvPath))
+                using (TextFieldParser parser = new TextFieldParser(csvFilePath))
                 {
                     parser.CommentTokens = new string[] { "#" };
                     parser.SetDelimiters(new string[] { "," });
@@ -37,7 +30,7 @@ namespace Persona2EP_TextIOmanager
 
                 if (parsedCsv.Count <= 1)
                 {
-                    MessageBox.Show("CSV 파일에 데이터가 없습니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Console.WriteLine("CSV 파일에 데이터가 없습니다.");
                     return;
                 }
 
@@ -49,7 +42,7 @@ namespace Persona2EP_TextIOmanager
 
                 if (keyIndex == -1 || translatedIndex == -1)
                 {
-                    MessageBox.Show("CSV 파일 형식이 잘못되었습니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Console.WriteLine("CSV 파일 형식이 잘못되었습니다.");
                     return;
                 }
 
@@ -144,8 +137,8 @@ namespace Persona2EP_TextIOmanager
                     result = result.Substring(0, result.Length - 1);
                 }
 
-                File.WriteAllText(outputTxtPath, result, Encoding.UTF8);
-                MessageBox.Show($"텍스트 파일로 변환 완료: {outputTxtPath}", "완료", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                File.WriteAllText(msgFilePath, result, Encoding.UTF8);
+                Console.WriteLine($"텍스트 파일로 변환 완료: {msgFilePath}");
             }
             catch (Exception ex)
             {
