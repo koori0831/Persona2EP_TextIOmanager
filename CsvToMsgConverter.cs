@@ -38,7 +38,7 @@ namespace Persona2EP_TextIOmanager
                 var header = parsedCsv[0];
 
                 int keyIndex = Array.IndexOf(header, "Key");
-                int translatedIndex = Array.IndexOf(header, "Translated");
+                int translatedIndex = Array.IndexOf(header, "Translation");
 
                 if (keyIndex == -1 || translatedIndex == -1)
                 {

@@ -23,7 +23,8 @@ namespace Persona2EP_TextIOmanager
                 Console.WriteLine("2. CSV 파일을 msg 파일로 변환");
                 Console.WriteLine("3. 폴더의 모든 msg 파일을 CSV 파일로 변환");
                 Console.WriteLine("4. 폴더의 모든 CSV 파일을 msg 파일로 변환");
-                Console.WriteLine("5. 종료");
+                Console.WriteLine("5. 원본 msg파일 추출");
+                Console.WriteLine("6. 종료");
 
                 string choice = Console.ReadLine();
 
@@ -101,6 +102,9 @@ namespace Persona2EP_TextIOmanager
                         Console.WriteLine("폴더 내 모든 CSV 파일 변환 완료.");
                         break;
                     case "5":
+                        OriginalTextExtractor.Extract();
+                        break;
+                    case "6":
                         Console.WriteLine("프로그램을 종료합니다.");
                         return;
                     default:
