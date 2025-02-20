@@ -19,7 +19,7 @@ namespace Persona2EP_TextIOmanager
                     parser.CommentTokens = new string[] { "#" };
                     parser.SetDelimiters(new string[] { "," });
                     parser.HasFieldsEnclosedInQuotes = true;
-                    parser.TrimWhiteSpace = false; 
+                    parser.TrimWhiteSpace = false;
 
                     while (!parser.EndOfData)
                     {
@@ -28,31 +28,24 @@ namespace Persona2EP_TextIOmanager
                     }
                 }
 
-                if (parsedCsv.Count <= 1)
+                if (parsedCsv.Count == 0)
                 {
                     Console.WriteLine("CSV 파일에 데이터가 없습니다.");
                     return;
                 }
 
                 var messageData = new SortedDictionary<string, MessageData>();
-                var header = parsedCsv[0];
 
-                int keyIndex = Array.IndexOf(header, "Key");
-                int translatedIndex = Array.IndexOf(header, "Translation");
-
-                if (keyIndex == -1 || translatedIndex == -1)
+                foreach (var columns in parsedCsv)
                 {
-                    Console.WriteLine("CSV 파일 형식이 잘못되었습니다.");
-                    return;
-                }
+                    if (columns.Length < 3) continue;
 
-                for (int i = 1; i < parsedCsv.Count; i++)
-                {
-                    var columns = parsedCsv[i];
-                    if (columns.Length <= Math.Max(keyIndex, translatedIndex)) continue;
+                    string key = columns[0].Trim();
+                    string originalText = columns[1];
+                    string translatedText = columns[2];
 
-                    string key = columns[keyIndex].Trim();
-                    string translated = columns[translatedIndex];
+                    // 번역문이 비어있으면 원문을 사용
+                    string textToUse = string.IsNullOrWhiteSpace(translatedText) ? originalText : translatedText;
 
                     if (key.Contains("_Choice"))
                     {
@@ -60,14 +53,14 @@ namespace Persona2EP_TextIOmanager
                         if (!messageData.ContainsKey(parentKey))
                             messageData[parentKey] = new MessageData();
 
-                        messageData[parentKey].Choices.Add(translated);
+                        messageData[parentKey].Choices.Add(textToUse);
                     }
                     else if (key.StartsWith("msg_"))
                     {
                         if (!messageData.ContainsKey(key))
                             messageData[key] = new MessageData();
 
-                        string[] lines = translated.Split(new[] { "\n" }, StringSplitOptions.None);
+                        string[] lines = textToUse.Split(new[] { "\n" }, StringSplitOptions.None);
 
                         for (int j = 0; j < lines.Length; j++)
                         {

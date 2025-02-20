@@ -1,5 +1,4 @@
 ﻿using System.Windows.Forms;
-
 namespace Persona2EP_TextIOmanager
 {
     public static class Utilities

@@ -113,7 +113,7 @@ namespace Persona2EP_TextIOmanager
         {
             using (var writer = new StreamWriter(filePath))
             {
-                writer.WriteLine("Key,Source,Translation");
+                //writer.WriteLine("Key,Source,Translation");
 
                 IEnumerable<KeyValuePair<string, List<string>>> sortedEntries = dialogues
                     .OrderBy(entry =>
